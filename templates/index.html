@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Resume Analyzer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="app">
+
+  <h1>AI Resume Analyzer</h1>
+  <p class="subtitle">
+    Upload your resume and compare it with a job description
+  </p>
+
+  <!-- Upload Card -->
+  <div class="card">
+    <form method="POST" enctype="multipart/form-data">
+
+      <div id="loader" class="loader hidden">
+        Analyzing resume...
+      </div>
+
+      <label class="upload-label">Upload Resume (PDF)</label>
+      <div class="upload-box" id="uploadBox">
+        <input type="file" name="resume" id="resumeInput" accept=".pdf" hidden required>
+        <div class="upload-content">
+          <div class="upload-icon">📄</div>
+          <p class="upload-text">
+            <strong>Drag & drop</strong> your resume here<br>
+            <span>or click to browse</span>
+          </p>
+          <p id="fileName" class="file-name hidden"></p>
+        </div>
+      </div>
+
+      <label>Paste Job Description</label>
+      <textarea name="job" rows="6" placeholder="Paste job description here..." required></textarea>
+
+      <button type="submit">Analyze Resume</button>
+    </form>
+  </div>
+
+  {% if score > 0 %}
+
+  <!-- SCORE CARD -->
+  <div class="score-card fade-up">
+
+    {% if ai_insight %}
+    <p class="ai-insight">
+      🤖 <strong>AI Insight:</strong> {{ ai_insight }}
+    </p>
+    {% endif %}
+
+    {% if top_chunks %}
+    <div class="result-card fade-up">
+      <h3>📌 Most Relevant Resume Sections</h3>
+      <div class="relevant-sections">
+        {% for text, score in top_chunks %}
+        <div class="section-card">
+          <p>{{ text }}</p>
+          <span class="section-score">
+            Similarity: {{ (score) | round(1) }}%
+          </span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="score-breakdown">
+      <p>🧠 Skill Match: {{ score }}%</p>
+      <p>📘 Semantic Alignment: {{ semantic_score }}%</p>
+      <p>⭐ Importance Bonus: +{{ importance_bonus }}</p>
+      <p class="decision {{ decision|lower|replace(' ', '-') }}">
+        <strong>Decision:</strong> {{ decision }}
+      </p>
+    </div>
+
+    <h3>
+      Resume Match Score
+      <span class="score-badge">{{ score }}%</span>
+    </h3>
+
+    <div class="progress-bar">
+      <div class="progress-fill {{ 'high' if score >= 75 else 'medium' if score >= 50 else 'low' }}"
+           data-score="{{ score }}">
+        <span id="score-value">0%</span>
+      </div>
+    </div>
+
+    <p class="score-text">
+      {% if score >= 75 %}
+        🚀 Excellent match! Your resume is highly aligned with this role.
+      {% elif score >= 50 %}
+        👍 Good match. Adding a few missing skills can boost your chances.
+      {% else %}
+        ⚠️ Low match. Focus on the suggestions below to improve alignment.
+      {% endif %}
+    </p>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results">
+
+    <div class="result-card fade-up">
+      <h2>Matched Skills ({{ matched|length }})</h2>
+      <div class="skills good">
+        {% for skill, count in matched.items() %}
+        <div class="skill-item">
+          <span>{{ skill }}</span>
+          <small class="explanation">{{ explanations.get(skill, '') }}</small>
+          <span class="priority {{ 'high' if skill_weights.get(skill,0) >= 3 else 'medium' }}">
+            {{ 'High Priority' if skill_weights.get(skill,0) >= 3 else 'Medium Priority' }}
+          </span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="result-card fade-up">
+      <h2>Missing Skills ({{ missing|length }})</h2>
+      <div class="skills bad">
+        {% for skill in missing %}
+          <span>{{ skill }}</span>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+
+  {% if missing %}
+  <div class="suggestion-card fade-up">
+    <h3>📈 How to Improve Your Match</h3>
+    <p class="suggestion-sub">
+      Based on the job description, adding these skills can increase your match score:
+    </p>
+    <ul class="suggestion-list">
+      {% for skill in missing %}
+      <li>
+        <span class="skill-name">{{ skill }}</span>
+        <span class="priority">High Priority</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  {% else %}
+
+  <!-- EMPTY STATE -->
+  <p class="empty_state">
+    📄 Upload a resume and job description to begin analysis.
+  </p>
+
+  {% endif %}
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+
