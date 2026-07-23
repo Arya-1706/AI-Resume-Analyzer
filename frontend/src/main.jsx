@@ -4,11 +4,14 @@ import App from './App.jsx'
 import "./style.scss"
 
 import { AuthProvider } from './features/auth/auth.context.jsx'
+import { InterviewProvider } from "./features/interview/interview.context";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+      <AuthProvider>
+        <InterviewProvider>
+        <App />
+      </InterviewProvider>
+      </AuthProvider>
   </StrictMode>,
 )

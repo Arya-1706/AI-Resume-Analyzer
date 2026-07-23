@@ -4,8 +4,13 @@ import { AuthProvider } from "./features/auth/auth.context"
 function App() {
 
 
-  return  <RouterProvider router={router} />
-  
+  return (
+  <AuthProvider>
+    <InterviewProvider>
+        <RouterProvider router={router} />
+    </InterviewProvider>
+  </AuthProvider>
+)
 }
 
 export default App
