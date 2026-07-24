@@ -10,7 +10,11 @@ export const useAuth = () => {
   const handleLogin = async ({email, password}) => {
     setLoading(true)
     try {
-      const data = await login({email, password})
+      await login({ email, password });
+
+const data = await getMe();
+
+setUser(data.user);
 
       setUser(data.user)
     } catch(err) {
@@ -48,8 +52,11 @@ export const useAuth = () => {
     
     const getAndSetUser = async()=>{
       try {
-      const data = await getAndSetUser(data.user)
-      } catch(err) { }
+      const data = await getMe()
+      setUser(data.user)
+      } catch(err) { 
+        setUser(null)
+       }
       finally {
       setLoading(false)
       }

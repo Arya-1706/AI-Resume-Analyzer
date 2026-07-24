@@ -9,7 +9,7 @@ import Interview from "./features/interview/pages/Interview";
 export const router = createBrowserRouter([
   {
   path: "/",
-  element:<Protected><h1><Home /></h1></Protected>,
+  element:<Protected><Home /></Protected>,
   },
   {
     path: "/login",
