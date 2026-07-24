@@ -13,18 +13,8 @@ const Home = () => {
     const navigate = useNavigate()
 
     const handleGenerateReport = async () => {
-        console.log("Generate button clicked");
-
-
         const resumeFile = resumeInputRef.current.files[ 0 ]
-        console.log("Job Description:", jobDescription);
-        console.log("Self Description:", selfDescription);
-        console.log("Resume:", resumeFile);
-
-
-
         const data = await generateReport({ jobDescription, selfDescription, resumeFile })
-         console.log("Response from API:", data);
         navigate(`/interview/${data._id}`)
     }
 
