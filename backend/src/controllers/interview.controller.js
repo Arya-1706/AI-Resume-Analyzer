@@ -1,6 +1,7 @@
 const pdfParse = require("pdf-parse")
 const { generateInterviewReport, generateResumePdf } = require("../services/ai.service")
 const interviewReportModel = require("../models/interviewReport.model")
+const { getUserInterviewReport } = require("../services/interview.services")
 
 
 
@@ -42,7 +43,10 @@ async function getInterviewReportByIdController(req, res) {
 
     const { interviewId } = req.params
 
-    const interviewReport = await interviewReportModel.findOne({ _id: interviewId, user: req.user.id })
+    const interviewReport = await getUserInterviewReport(
+        interviewId,
+        req.user.id
+    )
 
     if (!interviewReport) {
         return res.status(404).json({
@@ -76,7 +80,10 @@ async function getAllInterviewReportsController(req, res) {
 async function generateResumePdfController(req, res) {
     const { interviewReportId } = req.params
 
-    const interviewReport = await interviewReportModel.findById(interviewReportId)
+    const interviewReport = await getUserInterviewReport(
+        interviewReportId,
+        req.user.id
+    )
 
     if (!interviewReport) {
         return res.status(404).json({
