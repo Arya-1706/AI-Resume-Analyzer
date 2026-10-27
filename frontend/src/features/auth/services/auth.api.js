@@ -33,7 +33,8 @@ export async function login ({ email, password}) {
     return response.data
 
   } catch(err) {
-    console.log(err)
+    console.log("Login error:", err)
+    throw err
   }
 }
 
