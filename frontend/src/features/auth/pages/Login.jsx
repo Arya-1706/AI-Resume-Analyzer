@@ -1,54 +1,90 @@
-import React, {useState} from 'react'
+import { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import '../auth.form.scss'
-import {useNavigate, Link} from "react-router-dom"
 import { useAuth } from '../hooks/useAuth'
+import { getErrorMessage } from '../../../lib/getErrorMessage'
 
-export const Login = () => {
+export default function Login() {
+  const { login } = useAuth()
+  const location = useLocation()
 
-  const{loading, handleLogin} = useAuth()
-  const navigate = useNavigate()
+  const [form, setForm] = useState({ email: '', password: '' })
+  const [error, setError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const handleChange = (e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+    setSubmitting(true)
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        await handleLogin({email, password})
-        navigate('/')
+    try {
+      await login(form)
+    } catch (err) {
+      setError(getErrorMessage(err))
+      setSubmitting(false)
     }
-
-    if(loading) {
-      return (<main><h1>Loading...</h1></main>)
-    }
+  }
 
   return (
     <main>
-      <div className="form-container">
+      <div className='form-container'>
         <h1>Login</h1>
 
         <form onSubmit={handleSubmit}>
+          {error && (
+            <p className='form-error' role='alert'>
+              {error}
+            </p>
+          )}
 
-  
-          <div className="input-group">
-            <label htmlFor="email">Email</label>
-            <input 
-            onChange={(e)=>{setEmail(e.target.value)}}
-            type="email" id ="email" name='email' placeholder='Enter email address'/>
+          <div className='input-group'>
+            <label htmlFor='email'>Email</label>
+            <input
+              id='email'
+              name='email'
+              type='email'
+              value={form.email}
+              onChange={handleChange}
+              placeholder='Enter email address'
+              autoComplete='email'
+              required
+            />
           </div>
-          <div className="input-group">
-            <label htmlFor="password">Password</label>
-            <input 
-            onChange={(e)=>{setPassword(e.target.value)}} type="password" id ="password" name='password' placeholder='Enter password'/>
-          </div>  
-          
-            <button className='button primary-button'>Login</button>
 
-          
+          <div className='input-group'>
+            <label htmlFor='password'>Password</label>
+            <input
+              id='password'
+              name='password'
+              type='password'
+              value={form.password}
+              onChange={handleChange}
+              placeholder='Enter password'
+              autoComplete='current-password'
+              required
+            />
+          </div>
+
+          <button
+            className='button primary-button'
+            type='submit'
+            disabled={submitting}
+          >
+            {submitting ? 'Logging in...' : 'Login'}
+          </button>
         </form>
-        <p>Don't have an account? <Link to={"/register"}>Register</Link></p>
+
+        <p>
+          Don't have an account?{' '}
+          <Link to='/register' state={location.state}>
+            Register
+          </Link>
+        </p>
       </div>
     </main>
   )
 }
-export default Login

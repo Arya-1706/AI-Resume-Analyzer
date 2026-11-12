@@ -1,0 +1,196 @@
+.app-shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: 100vh;
+  padding: 1.5rem 1rem;
+  border-right: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--bg-sidebar), var(--bg));
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0 0.5rem;
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    line-height: 1.1;
+  }
+
+  &__logo {
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.7rem 0.9rem;
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    transition: background 0.2s, color 0.2s;
+
+    &:hover {
+      background: var(--surface);
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    &--active {
+      background: var(--surface-2);
+      color: var(--text);
+      box-shadow: inset 0 0 0 1px var(--border-strong);
+    }
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-top: auto;
+    padding: 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+  }
+
+  &__avatar {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    color: var(--on-accent);
+    font-weight: 600;
+  }
+
+  &__user-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+
+    strong {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    small {
+      overflow: hidden;
+      color: var(--text-faint);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+
+.app-main {
+  min-width: 0;
+}
+
+.topbar {
+  padding: 1rem 1.75rem 0;
+
+  &__search {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    width: 100%;
+    max-width: 720px;
+    padding: 0.85rem 1.1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: var(--text-faint);
+    text-align: left;
+    transition: border-color 0.2s;
+
+    &:hover {
+      border-color: var(--border-strong);
+    }
+  }
+}
+
+.app-content {
+  padding: 1.25rem 1.75rem 3rem;
+}
+
+// Small screens: the sidebar becomes a top strip
+@media (max-width: 960px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    height: auto;
+    padding: 1rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+
+    &__nav {
+      flex-direction: row;
+    }
+
+    &__user {
+      margin-top: 0;
+      margin-left: auto;
+    }
+
+    &__user-info {
+      display: none;
+    }
+  }
+
+  .topbar,
+  .app-content {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+}
+
+// Export Report uses the browser print dialog (Save as PDF)
+@media print {
+  .sidebar,
+  .topbar,
+  .no-print {
+    display: none !important;
+  }
+
+  .app-shell {
+    display: block;
+  }
+
+  body {
+    background: #fff;
+    color: #111;
+  }
+
+  .card {
+    border-color: #ccc;
+    background: #fff;
+    box-shadow: none;
+    color: #111;
+  }
+}

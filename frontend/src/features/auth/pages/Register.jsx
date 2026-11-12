@@ -1,57 +1,107 @@
-import React, {useState} from 'react'
-import {useNavigate, Link} from "react-router-dom"
+import { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import { getErrorMessage } from '../../../lib/getErrorMessage'
 
-const Register = () => {
+export default function Register() {
+  const { register } = useAuth()
+  const location = useLocation()
 
+  const [form, setForm] = useState({
+    username: '',
+    email: '',
+    password: '',
+  })
+  const [error, setError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
-    const navigate = useNavigate()
+  const handleChange = (e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }
 
-    const [username, setUsername] =useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const {loading, handleRegister } = useAuth()
-    
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+    setSubmitting(true)
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        await handleRegister({username, email, password})
-        navigate('/')
+    try {
+      await register(form)
+    } catch (err) {
+      setError(getErrorMessage(err))
+      setSubmitting(false)
     }
-    
-    if(loading) {
-      return(<main><h1>Loading.....</h1></main>)
-    }
+  }
 
   return (
     <main>
-      <div className="form-container">
+      <div className='form-container'>
         <h1>Register</h1>
 
         <form onSubmit={handleSubmit}>
+          {error && (
+            <p className='form-error' role='alert'>
+              {error}
+            </p>
+          )}
 
-          <div className="input-group">
-            <label htmlFor="username">Username</label>
-            <input onChange={(e) => {setUsername(e.target.value)}} type="text" id ="username" name='username' placeholder='Enter username'/>
+          <div className='input-group'>
+            <label htmlFor='username'>Username</label>
+            <input
+              id='username'
+              name='username'
+              type='text'
+              value={form.username}
+              onChange={handleChange}
+              placeholder='Enter username'
+              autoComplete='username'
+              required
+            />
           </div>
-          <div className="input-group">
-            <label htmlFor="email">Email</label>
-            <input 
-               onChange={(e) => { setEmail(e.target.value)}} type="email" id ="email" name='email' placeholder='Enter email address'/>
+
+          <div className='input-group'>
+            <label htmlFor='email'>Email</label>
+            <input
+              id='email'
+              name='email'
+              type='email'
+              value={form.email}
+              onChange={handleChange}
+              placeholder='Enter email address'
+              autoComplete='email'
+              required
+            />
           </div>
-          <div className="input-group">
-            <label htmlFor="password">Password</label>
-            <input 
-              onChange={(e) => {setPassword(e.target.value)}} type="password" id ="password" name='password' placeholder='Enter password'/>
-            </div>  
 
-            <button className='button primary-button'>Register</button>
+          <div className='input-group'>
+            <label htmlFor='password'>Password</label>
+            <input
+              id='password'
+              name='password'
+              type='password'
+              value={form.password}
+              onChange={handleChange}
+              placeholder='Enter password'
+              autoComplete='new-password'
+              required
+            />
+          </div>
 
-          
+          <button
+            className='button primary-button'
+            type='submit'
+            disabled={submitting}
+          >
+            {submitting ? 'Creating account...' : 'Register'}
+          </button>
         </form>
-        <p>Already have an account? <Link to={"/login"}>Login</Link></p>
+
+        <p>
+          Already have an account?{' '}
+          <Link to='/login' state={location.state}>
+            Login
+          </Link>
+        </p>
       </div>
     </main>
   )
 }
-export default Register
