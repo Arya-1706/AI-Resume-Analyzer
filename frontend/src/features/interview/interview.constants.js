@@ -1,0 +1,2 @@
+export const MAX_JOB_DESCRIPTION_CHARS = 5000
+export const MAX_RESUME_SIZE_MB = 4

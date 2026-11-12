@@ -1,15 +1,23 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
+const env = require('./env')
 
+// Cache the connection promise across requests
+let connectionPromise = null
 
-async function connectToDB() {
-  try {
-    await mongoose.connect(process.env.MONGO_URI)
-    console.log("Connected to Database")
-
-  } catch (error) {
-
-    console.error("Error connecting to Database:", error)
+function connectToDB() {
+  if (!connectionPromise) {
+    connectionPromise = mongoose
+      .connect(env.MONGO_URI, { serverSelectionTimeoutMS: 10000 })
+      .then(() => {
+        console.log('Connected to Database')
+      })
+      .catch((error) => {
+        connectionPromise = null // Allow retry on the next request
+        throw error
+      })
   }
+
+  return connectionPromise
 }
 
 module.exports = connectToDB

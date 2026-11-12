@@ -1,0 +1,45 @@
+:root {
+  // Surfaces (deep teal tinted dark)
+  --bg: #0d1413;
+  --bg-sidebar: #101918;
+  --surface: #151f1e;
+  --surface-2: #1b2827;
+  --surface-3: #223332;
+  --border: rgba(160, 205, 195, 0.1);
+  --border-strong: rgba(160, 205, 195, 0.22);
+
+  // Text
+  --text: #e9f1ef;
+  --text-muted: #a2b5b0;
+  --text-faint: #7a9090;
+
+  // Accent
+  --accent: #7cc4b4;
+  --accent-light: #a6dccf;
+  --accent-strong: #4a9686;
+  --accent-soft: rgba(124, 196, 180, 0.14);
+  --accent-gradient: linear-gradient(90deg, #4a9686, #a6dccf);
+  --on-accent: #0b1513;
+
+  // Status colours
+  --success: #86cf9d;
+  --success-soft: rgba(134, 207, 157, 0.14);
+  --warning: #e2b46f;
+  --warning-soft: rgba(226, 180, 111, 0.14);
+  --danger: #dc8f8f;
+  --danger-soft: rgba(220, 143, 143, 0.14);
+  --info: #8fb7dd;
+  --info-soft: rgba(143, 183, 221, 0.14);
+
+  // Resume preview paper
+  --paper: #f4f1ea;
+  --paper-text: #2b3331;
+
+  // Type, shape, depth
+  --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.25);
+  --sidebar-width: 240px;
+}

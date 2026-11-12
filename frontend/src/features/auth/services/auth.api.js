@@ -1,70 +1,35 @@
-import axios from "axios"
+import api from '../../../lib/axios'
 
-const api = axios.create({
-   baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true
+export const register = async ({ username, email, password }) => {
+  const response = await api.post('/api/auth/register', {
+    username,
+    email,
+    password,
+  })
 
-})
-
-
-export async function register({username, email, password}) {
-   try {
-    const response = await api.post('/api/auth/register', {
-      username, email, password
-    })
-
-    return response.data
-     
-  } catch(err) {
-
-    console.log(err)
-    throw err
-
-  } 
+  return response.data
 }
 
-export async function login ({ email, password}) {
+export const login = async ({ email, password }) => {
+  const response = await api.post('/api/auth/login', {
+    email,
+    password,
+  })
 
-  try {
-    const response = await api.post("/api/auth/login", {
-      email, password
-    })
-
-    return response.data
-
-  } catch(err) {
-    console.log("Login error:", err)
-    throw err
-  }
+  return response.data
 }
 
-export async function logout() {
-  try{
-
-    const response = await api.get("/api/auth/logout") 
-
-    return response.data
-
-  } catch(err) {
-
-    console.log(err)
-
-  }
+export const logout = async () => {
+  const response = await api.get('/api/auth/logout')
+  return response.data
 }
 
-export async function getMe() {
-
-  try{
-
-    const response = await api.get("/api/auth/get-me")
-    
-    return response.data
-
-  } catch(err) {
-
-    console.log(err)
-
-  }
+export const getMe = async () => {
+  const response = await api.get('/api/auth/get-me')
+  return response.data
 }
 
-export default api
+export const getSession = async () => {
+  const response = await api.get('/api/auth/session')
+  return response.data
+}
