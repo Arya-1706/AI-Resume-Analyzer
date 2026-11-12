@@ -16,7 +16,9 @@
 
 <!-- Add once you have a deployed link:
 [**Live Demo**](https://your-demo-link.vercel.app) · -->
-[**Source Code**](https://github.com/Arya-1706/AI-Resume-Analyzer) · [**Screenshots**](#-product-walkthrough) · [**Run Locally**](#-run-locally)
+<a href="https://github.com/Arya-1706/AI-Resume-Analyzer"><img src="https://img.shields.io/badge/Source_Code-181717?style=for-the-badge&logo=github&logoColor=white" alt="Source Code"/></a>
+<a href="#product-walkthrough"><img src="https://img.shields.io/badge/Screenshots-8B5CF6?style=for-the-badge&logo=googlephotos&logoColor=white" alt="Screenshots"/></a>
+<a href="#run-locally"><img src="https://img.shields.io/badge/Run_Locally-2563EB?style=for-the-badge&logo=rocket&logoColor=white" alt="Run Locally"/></a>
 
 </div>
 
@@ -35,6 +37,7 @@ A resume can look polished and still say nothing a particular job is listening f
 | An overall match assessment with a section-by-section breakdown. | Found and missing keywords, skill gaps, and actionable suggestions. | Role-specific interview questions and a personalized prep roadmap. |
 
 ---
+<a id="product-walkthrough"></a>
 
 ## 🖼️ Product walkthrough
 
@@ -198,6 +201,8 @@ AI-Resume-Analyzer/
 - **Consistent API handling:** Shared Axios configuration and error-message handling cut down duplicated frontend request logic.
 
 ---
+
+<a id="run-locally"></a>
 
 ## ⚡ Run locally
 
