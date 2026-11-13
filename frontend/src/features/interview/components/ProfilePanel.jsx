@@ -4,6 +4,8 @@ import { MAX_RESUME_SIZE_MB } from '../interview.constants'
 export default function ProfilePanel({
   resumeFile,
   onResumeChange,
+  fileError,
+  onFileError,
   selfDescription,
   onSelfDescriptionChange,
 }) {
@@ -44,12 +46,28 @@ export default function ProfilePanel({
             id='resume'
             name='resume'
             accept='application/pdf'
-            onChange={(e) =>
-              onResumeChange(e.target.files[0] ?? null)
-            }
+            onChange={(e) => {
+              const file = e.target.files[0] ?? null
+
+              if (file && file.type !== 'application/pdf') {
+                onResumeChange(null)
+                onFileError('Please upload a valid PDF file.')
+                e.target.value = ''
+                return
+              }
+
+              onFileError('')
+              onResumeChange(file)
+            }}
           />
         </label>
-      </div>
+
+            {fileError && (
+              <p className='form-error' role='alert'>
+                {fileError}
+              </p>
+            )}
+        </div>
 
       <div className='or-divider'>
         <span>OR</span>

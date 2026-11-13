@@ -23,6 +23,7 @@ export default function Analyze() {
   const [selfDescription, setSelfDescription] = useState('')
   const [resumeFile, setResumeFile] = useState(null)
   const [formError, setFormError] = useState('')
+  const [fileError, setFileError] = useState('')
 
   const handleGenerate = async () => {
     if (!jobDescription.trim()) {
@@ -87,6 +88,8 @@ export default function Analyze() {
           <ProfilePanel
             resumeFile={resumeFile}
             onResumeChange={setResumeFile}
+            fileError={fileError}
+            onFileError={setFileError}
             selfDescription={selfDescription}
             onSelfDescriptionChange={setSelfDescription}
           />

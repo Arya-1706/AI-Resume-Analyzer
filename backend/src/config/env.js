@@ -5,7 +5,7 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.coerce.number().int().positive().default(3000),
   MONGO_URI: z.string().min(1, 'MONGO_URI is required'),
-  JWT_SECRET: z.string().min(16, 'JWT_SECRET must be at least 16 characters'),
+  JWT_SECRET: z.string().min(48, 'JWT_SECRET must be at least 48 characters'),
   CLIENT_URL: z.string().url().default('http://localhost:5173'),
   CORS_ORIGINS: z
   .string()
