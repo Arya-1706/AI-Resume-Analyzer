@@ -1,5 +1,10 @@
+
 {
   "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://ai-resume-analyzer-y78j.vercel.app/api/$1"
+    },
     {
       "source": "/(.*)",
       "destination": "/index.html"
